@@ -3,11 +3,6 @@ import sqlalchemy
 from sqlalchemy import create_engine, ForeignKey
 
 
-# Write a function that prints "Hello, World!" to the console.
-def return_42() -> int:
-    return 42
-
-
 def extract():
     excel_file = "data/restaurant_data.xlsx"
     df = pd.read_excel(excel_file, sheet_name="Restaurant Menu Items")
@@ -30,14 +25,21 @@ def transform(raw_df, ref_df):
     df = raw_df[raw_df["Product Name"].notna()]
     df = df[df["Ingredients on Product Page"].notna()]
     print(f"{raw_df.shape[0]-df.shape[0]} rows removed")
-    df = pd.merge(ref_df, df, left_on=['Restaurant name', 'Restaurant original category'], 
-                     right_on=['Store', 'Product category'], how='right')
+
+    # Use category reference sheet to apply new categories
+    df = pd.merge(
+        ref_df,
+        df,
+        left_on=["Restaurant name", "Restaurant original category"],
+        right_on=["Store", "Product category"],
+        how="right",
+    )
     df = df[c_dict.keys()].rename(columns=c_dict)
     return df
 
 
 def load(df):
-    # Example connection URL for SQLite database
+    # Connection URL for SQLite database
     db_url = "sqlite:///fdc_db.db"
 
     # Create a SQLAlchemy engine
@@ -70,6 +72,7 @@ def load(df):
     # Create tables
     metadata.create_all(engine)
 
+    # Write to database excluding duplicates
     engine = engine.raw_connection()
 
     restaurant_df = (
@@ -109,5 +112,5 @@ def load(df):
 if __name__ == "__main__":
     df, ref_df = extract()
     df = transform(df, ref_df)
-    df.to_csv('new.csv', index=None)
+    df.to_csv("new.csv", index=None)
     load(df)
