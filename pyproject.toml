@@ -6,8 +6,9 @@ authors = ["Food Is Good <dev@foodisgood.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.11"
-
+python = "^3.12"
+sqlalchemy = "1.4.46"
+pandas = "2.0.3"
 
 [tool.poetry.group.dev.dependencies]
 pre-commit = "^3.7.0"
