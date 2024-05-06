@@ -1,46 +1,31 @@
 # Fig Data Challenge
 
-This project represents a standard data job configuration at Fig and can be used for interview purposes.
+This project demonstrates a quick data pipeline to process small csv files.
 
-If you look at the `data/restaurant_data.xlsx`, there are restaurant menu items available.
+├── data/
+└── src
+    ├── fig_data_challenge
+    │   └── main.py
+    └── tests
+        ├── test_data/
+        └── test_main.py
 
-## Pyenv (Optional)
+The above file structure displays the main files used for running the script. The data/ folder contains the xlsx file we are processing. The src/ folder contains the actual engine for processing. The tests/ for ensuring the scripts are running properly.
 
-We recommend using [pyenv](https://github.com/pyenv/pyenv#installation) to manage your Python installations. This will allow you to safely use Python versions different from your system's default version.
+## How to run
 
-This project is currently on Python **3.11**. To install this version with pyenv:
+Navigate to the root folder, then run the following
 
 ```bash
-pyenv install 3.11.1
+poetry shell
+poetry install
+poetry run python src/fig_data_challenge/main.py
 ```
 
-## Poetry
+## How to test
 
-This project uses [Poetry](python-poetry.org) to manage its packages and virtual environments. Poetry handles both installing the correct package versions, as well as ensuring those packages are available during runtime. See installation instructions [here](https://python-poetry.org/docs/#installation).
-
-## Tooling Setup
-
-To setup the project, run:
+Navigate to the root folder, then run the following
 
 ```bash
-make setup
-```
-
-This will install any needed packages as well as setup the [pre-commit](https://pre-commit.com/) hooks. We currently use the following tools when committing code:
-
-- [flake8](https://github.com/PyCQA/flake8) - A linter.
-- [black](https://github.com/psf/black) - A code formatter. We are currently using a line length of [90 characters](https://www.youtube.com/watch?v=wf-BqAjZb8M&t=260s).
-- [mypy](https://github.com/python/mypy) - A static type checker.
-- [isort](https://github.com/PyCQA/isort) - A package import formatter.
-
-If you'd like to run these tools manually, run:
-
-```bash
-poetry run pre-commit run --all-files
-```
-
-or:
-
-```bash
-make pre-commit
+pytest
 ```
