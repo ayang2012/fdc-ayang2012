@@ -11,10 +11,11 @@ def return_42() -> int:
 def extract():
     excel_file = "data/restaurant_data.xlsx"
     df = pd.read_excel(excel_file, sheet_name="Restaurant Menu Items")
-    return df
+    ref_df = pd.read_excel(excel_file, sheet_name="Reference categories")
+    return df, ref_df
 
 
-def transform(df_raw):
+def transform(raw_df, ref_df):
     c_dict = {
         "#": "id",
         "Store": "restaurant",
@@ -22,14 +23,15 @@ def transform(df_raw):
         "Ingredients on Product Page": "ingredients",
         "Allergens and Warnings": "allergens",
         "URL of primary product picture": "picture_url",
-        "Product category": "category",
+        "Fig Category 1": "category",
     }
 
     # remove no product names
-    df = df_raw[df_raw["Product Name"].notna()]
+    df = raw_df[raw_df["Product Name"].notna()]
     df = df[df["Ingredients on Product Page"].notna()]
-    print(f"{df_raw.shape[0]-df.shape[0]} rows removed")
-
+    print(f"{raw_df.shape[0]-df.shape[0]} rows removed")
+    df = pd.merge(ref_df, df, left_on=['Restaurant name', 'Restaurant original category'], 
+                     right_on=['Store', 'Product category'], how='right')
     df = df[c_dict.keys()].rename(columns=c_dict)
     return df
 
@@ -105,6 +107,7 @@ def load(df):
 
 
 if __name__ == "__main__":
-    df = extract()
-    df = transform(df)
+    df, ref_df = extract()
+    df = transform(df, ref_df)
+    df.to_csv('new.csv', index=None)
     load(df)
