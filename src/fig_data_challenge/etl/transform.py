@@ -1,4 +1,5 @@
 import pandas as pd
+import os
 
 
 def transform(raw_df, ref_df):
@@ -17,10 +18,11 @@ def transform(raw_df, ref_df):
 
     # Identify and store the removed rows
     removed_rows_df = raw_df[~raw_df.index.isin(processed_df.index)]
+    os.makedirs("debug_output", exist_ok=True)
+    removed_rows_df.to_csv("debug_output/dropped_df.csv", index=None)
 
     # Output the number of removed rows
     print(f"{len(removed_rows_df)} rows removed, stored in debug_output/")
-    removed_rows_df.to_csv("debug_output/dropped_df.csv", index=None)
 
     # Use category reference sheet to apply new categories
     df = pd.merge(
