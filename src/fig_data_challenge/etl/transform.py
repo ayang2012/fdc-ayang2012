@@ -12,15 +12,20 @@ def transform(raw_df, ref_df):
         "Fig Category 1": "category",
     }
 
-    # remove no product names
-    df = raw_df[raw_df["Product Name"].notna()]
-    df = df[df["Ingredients on Product Page"].notna()]
-    print(f"{raw_df.shape[0]-df.shape[0]} rows removed")
+    # Remove rows with missing product names and ingredients
+    processed_df = raw_df.dropna(subset=["Product Name", "Ingredients on Product Page"])
+
+    # Identify and store the removed rows
+    removed_rows_df = raw_df[~raw_df.index.isin(processed_df.index)]
+
+    # Output the number of removed rows
+    print(f"{len(removed_rows_df)} rows removed, stored in debug_output/")
+    removed_rows_df.to_csv("debug_output/dropped_df.csv", index=None)
 
     # Use category reference sheet to apply new categories
     df = pd.merge(
         ref_df,
-        df,
+        processed_df,
         left_on=["Restaurant name", "Restaurant original category"],
         right_on=["Store", "Product category"],
         how="right",
