@@ -18,12 +18,22 @@ The above is the ERD for this challenge. It can be modified additionally in the 
 
 ## How to run
 
-Navigate to the root folder, then run the following
+Navigate to the root folder, then run the following `make setup` and `make run-main`commands
 
 ```bash
-poetry shell
-poetry install
-poetry run python src/fig_data_challenge/main.py
+setup:
+	poetry install
+	poetry run pre-commit install
+
+run-main:
+	poetry run python src/main.py
+
+lint:
+	poetry run flake8 src/ tests/
+
+test:
+	poetry run pytest
+
 ```
 
 There will also be an output file written in the `debug_output` folder with any dropped rows due to NA values.

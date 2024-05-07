@@ -11,14 +11,14 @@ def connect_to_database(db_url):
 
 def define_table_schema(metadata):
     """Define table schema."""
-    restaurant_table = sqlalchemy.Table(
+    sqlalchemy.Table(
         "restaurants",
         metadata,
         sqlalchemy.Column("id", sqlalchemy.Integer, primary_key=True),
         sqlalchemy.Column("name", sqlalchemy.String),
     )
 
-    product_table = sqlalchemy.Table(
+    sqlalchemy.Table(
         "products",
         metadata,
         sqlalchemy.Column("id", sqlalchemy.Integer, primary_key=True),
