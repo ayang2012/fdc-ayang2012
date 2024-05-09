@@ -37,11 +37,3 @@ test:
 ```
 
 There will also be an output file written in the `debug_output` folder with any dropped rows due to NA values.
-
-## How to test
-
-Navigate to the root folder, then run the following
-
-```bash
-pytest
-```
