@@ -32,5 +32,6 @@ def transform(raw_df, ref_df):
         right_on=["Store", "Product category"],
         how="right",
     )
+    print(f"{len(df[df['Restaurant original category'] != df['Product category']])} rows updated on category")
     df = df[c_dict.keys()].rename(columns=c_dict)
     return df
